@@ -9,7 +9,6 @@ import (
 // @title MarvelComicsAPI
 // @description Retrieves information on Marvel characters
 // @version 1.0
-// @host localhost:8080
 // @BasePath /api/v1
 func main()  {
 	config.Init()

@@ -9,7 +9,6 @@ definitions:
       Name:
         type: string
     type: object
-host: localhost:8080
 info:
   contact: {}
   description: Retrieves information on Marvel characters
