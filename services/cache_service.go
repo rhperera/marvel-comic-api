@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"github.com/go-redis/redis/v8"
 	"github.com/labstack/gommon/log"
+	"github.com/rhperera/marvel-comic-api/config"
 	"github.com/rhperera/marvel-comic-api/domain"
 )
 
@@ -32,7 +33,7 @@ type RedisCacheService struct {
 
 func (cache *RedisCacheService) Connect() bool {
 	cache.rdb = redis.NewClient(&redis.Options{
-		Addr: "ec2-3-133-130-7.us-east-2.compute.amazonaws.com:6379",
+		Addr: config.Get("CACHE_DOMAIN"),
 	})
 	if cache.rdb == nil {
 		return false
