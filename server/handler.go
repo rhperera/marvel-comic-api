@@ -64,62 +64,43 @@ func (handler *Handler) GetCharacterById(c echo.Context) error {
 func (handler *Handler) GetAllCharacters(c echo.Context) error {
 	data, err := handler.cacheService.GetIds()
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, domain.HttpResponse {
-		})
+		return c.JSON(http.StatusInternalServerError, domain.HttpResponse{})
 	}
 	if data != "" {
 		count := handler.apiService.GetCharacterCount()
 		var idsArray []int
-		err1 := json.Unmarshal([]byte(data), &idsArray)
-		if err1 != nil {
-			return c.JSON(http.StatusInternalServerError, domain.HttpResponse {
-			})
-			log.Error(err1)
+		if err := json.Unmarshal([]byte(data), &idsArray); err != nil {
+			return c.JSON(http.StatusInternalServerError, domain.HttpResponse{})
+			log.Error(err)
 		}
-
 
 		if len(idsArray) == count {
 			// cache count and count from API is same
-			return c.JSON(http.StatusOK, domain.HttpResponse{
-				Data:  idsArray,
-			})
+			return c.JSON(http.StatusOK, domain.HttpResponse{Data: idsArray})
 		}
-
 		// Counts in API server and cache mismatch. Get the new ones from API and update cache
 		if count > len(idsArray) {
 			newIds, newIdsErr := handler.apiService.GetAllIDs(len(idsArray))
 			if newIdsErr != nil {
 				return c.JSON(http.StatusBadRequest, domain.HttpResponse{
-					Data:  nil,
-					Error: *newIdsErr,
-				})
+					Data:  nil, Error: *newIdsErr})
 			}
 			idsArray = append(idsArray, newIds...)
-
 			// Also update the cache
 			handler.cacheService.AddIds(&services.IdsHolder{Ids: idsArray})
 		}
-
-
-		return c.JSON(http.StatusOK, domain.HttpResponse{
-			Data:  idsArray,
-		})
+		return c.JSON(http.StatusOK, domain.HttpResponse{Data:  idsArray})
 	}
 
 	// We are loading all data for the first time
 	dataFromApi, errFromApi := handler.apiService.GetAllIDs(0)
 	if errFromApi != nil {
 		return c.JSON(http.StatusBadRequest, domain.HttpResponse{
-			Data:  nil,
-			Error: *errFromApi,
-		})
+			Data:  nil,Error: *errFromApi})
 	}
-
 	handler.cacheService.AddIds(&services.IdsHolder{Ids: dataFromApi})
 
-	return c.JSON(http.StatusOK, domain.HttpResponse{
-		Data:  dataFromApi,
-	})
+	return c.JSON(http.StatusOK, domain.HttpResponse{Data:  dataFromApi})
 }
 
 func NewHandler(cS services.ICacheService, apiS services.IComicCharacterAPI) *Handler {

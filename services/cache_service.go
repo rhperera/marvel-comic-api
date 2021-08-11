@@ -23,10 +23,6 @@ func (idsHolder *IdsHolder) MarshalBinary() ([]byte, error) {
 	return json.Marshal(idsHolder.Ids)
 }
 
-func (idsHolder *IdsHolder) UnmarshalBinary(data []byte) error {
-	return json.Unmarshal(data, &idsHolder)
-}
-
 type RedisCacheService struct {
 	rdb *redis.Client
 }

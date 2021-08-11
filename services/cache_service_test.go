@@ -1,8 +1,12 @@
 package services
 
-import "testing"
+import (
+	"github.com/rhperera/marvel-comic-api/config"
+	"testing"
+)
 
 func TestRedisCacheService_AddIds(t *testing.T) {
+	config.InitForTests()
 	rdb := &RedisCacheService{}
 	rdb.Connect()
 	ids := IdsHolder{Ids: []int{1,3,4,5}}

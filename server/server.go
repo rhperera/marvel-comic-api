@@ -33,10 +33,8 @@ func InitAPI() {
 	if EchoCon == nil {
 		log.Fatal(common.ErrorEchoServerInit)
 	}
-
 	cacheService := &services.RedisCacheService{}
 	cacheService.Connect()
-
 	handler := NewHandler(cacheService, &services.MarvelCharacterAPI{})
 
 	EchoRG = EchoCon.Group("/api/v1")

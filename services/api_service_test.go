@@ -1,10 +1,12 @@
 package services
 
 import (
+	"github.com/rhperera/marvel-comic-api/config"
 	"testing"
 )
 
 func TestGetByID_ValidID(t *testing.T) {
+	config.InitForTests()
 	apiService := &MarvelCharacterAPI{}
 	resp, err := apiService.GetByID(1011334)
 	if err != nil {
@@ -19,6 +21,7 @@ func TestGetByID_ValidID(t *testing.T) {
 }
 
 func TestGetByID_IdAsZero(t *testing.T) {
+	config.InitForTests()
 	apiService := &MarvelCharacterAPI{}
 	_, err := apiService.GetByID(0)
 	if err == nil {
@@ -27,6 +30,7 @@ func TestGetByID_IdAsZero(t *testing.T) {
 }
 
 func TestGetByID_IdNotFound(t *testing.T) {
+	config.InitForTests()
 	apiService := &MarvelCharacterAPI{}
 	_, err := apiService.GetByID(1111111111888888)
 	if err == nil {
@@ -35,6 +39,7 @@ func TestGetByID_IdNotFound(t *testing.T) {
 }
 
 func TestMarvelCharacterAPI_GetAllIDs(t *testing.T) {
+	config.InitForTests()
 	apiService := &MarvelCharacterAPI{}
 	resp, err := apiService.GetAllIDs(0)
 	if err != nil {
@@ -46,9 +51,19 @@ func TestMarvelCharacterAPI_GetAllIDs(t *testing.T) {
 }
 
 func TestMarvelCharacterAPI_getAPIResponse_emptyURL(t *testing.T) {
+	config.InitForTests()
 	apiService := &MarvelCharacterAPI{}
 	res, err := apiService.getAPIResponse("");
 	if err == nil || res != nil  {
 		t.Error("No error returned")
+	}
+}
+
+func TestMarvelCharacterAPI_GetCharacterCount(t *testing.T) {
+	config.InitForTests()
+	apiService := &MarvelCharacterAPI{}
+	count := apiService.GetCharacterCount()
+	if count < 1 {
+		t.Errorf("Error count is less than 1. count-%d", count)
 	}
 }
