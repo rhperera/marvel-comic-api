@@ -1,9 +1,15 @@
-FROM golang:1.6.1-alpine
+FROM golang:1.16
 
-WORKDIR $GOPATH/src/github.com/rhperera/marvel-comic-api
+WORKDIR /app
 
+COPY go.mod .
+COPY go.sum .
+
+# fetch dependencies
+RUN go mod download
+RUN go mod verify
+
+# copy the source code as the last step
 COPY . .
-
-RUN go get
 
 EXPOSE 8080

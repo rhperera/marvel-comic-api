@@ -16,6 +16,7 @@
 * `go run app.go`
 
 ### Running with docker-compose 
+This start up the two docker containers, redis and webapp
 #### Prerequisites
 * Docker engine and docker-compose should be installed
 * Clone the Repo `git clone https://github.com/rhperera/marvel-comic-api.git`
@@ -25,3 +26,5 @@
   PUBLIC_KEY=MARVEL_COMICS_PUBLIC_KEY
   CACHE_DOMAIN=REDIS_SERVER_DOMAIN:PORT
   ```
+  
+* Run `sudo docker-compose up --build`

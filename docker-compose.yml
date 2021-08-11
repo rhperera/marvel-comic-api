@@ -5,11 +5,11 @@ services:
     image: "redis:alpine"
     ports:
       - "6379:6379"
-  golang:
+  webapp:
     build:
       context: .
       dockerfile: dockerfile
-    image: golang:1.6.1-alpine
+    image: golang:1.16
     container_name: golang
     restart: unless-stopped
     ports:
