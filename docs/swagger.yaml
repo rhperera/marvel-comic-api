@@ -1,0 +1,57 @@
+basePath: /api/v1
+definitions:
+  domain.ComicCharacter:
+    properties:
+      Description:
+        type: string
+      Id:
+        type: integer
+      Name:
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: Retrieves information on Marvel characters
+  title: MarvelComicsAPI
+  version: "1.0"
+paths:
+  /characters:
+    get:
+      consumes:
+      - application/json
+      operationId: GetAllCharacters
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              type: integer
+            type: array
+      summary: Grt Ids of all characters
+      tags:
+      - Characters
+  /characters/{id}:
+    get:
+      consumes:
+      - application/json
+      operationId: GetCharacterById
+      parameters:
+      - description: Id of marvel character
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.ComicCharacter'
+      summary: Get a comic character by Id
+      tags:
+      - Characters
+swagger: "2.0"
